@@ -1,0 +1,30 @@
+img.logo {
+    width: 48px;
+    height: 48px;
+}
+
+.navbar-brand img.logo {
+    width: 30px;
+    height: 30px;
+}
+
+.login-area {
+    width: 100%;
+    max-width: 350px;
+    min-height: 60vh;
+    margin: auto;
+    display: flex;
+    align-items: center;
+}
+
+.login-area input[type='email'] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.login-area input[type='password'] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}

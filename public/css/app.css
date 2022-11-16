@@ -1,3 +1,7 @@
+#content {
+    min-height: 100vh;
+}
+
 img.logo {
     width: 48px;
     height: 48px;

@@ -231,4 +231,7 @@ $RECYCLE.BIN/
 # and uncomment the following lines
 # .pnp.*
 
+# sessions path
+/sessions
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,linux,macos,node,yarn

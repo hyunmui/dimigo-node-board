@@ -2,18 +2,18 @@
 
 {% block content %}
     <div class="login-area">
-        <form>
+        <form method="post">
             <div class="d-flex align-items-center mb-3">
                 <img class="logo" src="/images/dimigo-logo.png" alt="LOGO"/>
                 <h1 class="mb-0 ms-2">DIMIGO BOARD</h1>
             </div>
 
             <div class="form-floating">
-                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com"/>
+                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email" value="hyunmui@outlook.kr"/>
                 <label for="floatingInput">Email address</label>
             </div>
             <div class="form-floating">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password"/>
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" value="qwe12#"/>
                 <label for="floatingPassword">Password</label>
             </div>
 

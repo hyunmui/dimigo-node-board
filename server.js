@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const nunjucks = require('nunjucks');
+const logger = require('./middleware/logger');
 const PORT = process.env.PORT || 8000;
 
 nunjucks.configure('views', {
@@ -10,6 +11,8 @@ nunjucks.configure('views', {
 });
 
 app.use('/', express.static(path.join(__dirname, 'public')));
+
+app.use(logger);
 
 app.get('/', function (req, res) {
     res.render('posts/index.html.njk', { user: { name: 'John' } });

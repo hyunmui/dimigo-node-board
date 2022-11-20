@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const postController = require('../controllers/PostController');
 
-router.get('/', (req, res) => {
-    console.log(req.session.loginMember);
-    res.render('post/list.html.njk');
-});
+router.get('/', postController.index);
 
 module.exports = router;

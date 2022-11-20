@@ -1,0 +1,23 @@
+{% extends "../template.html.njk" %}
+
+{% block content %}
+    <header>
+        <h1>{{ post.title}}</h1>
+        <span>{{ post.authorId }}</span>
+        <span>
+            {{ post.writeDate }}</span>
+    </header>
+    <div class="content">
+        {{ post.content | striptags(true) | escape | nl2br }}
+    </div>
+    <footer>
+        <a href="/posts" class="btn btn-primary btn-sm">목록으로</a>
+        {% if loginMember.memberId === post.authorId %}
+            <a href="/post/edit/{{ post.id }}" class="btn btn-warning btn-sm">수정</a>
+            <form action="/post/delete" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')" style="display: inline">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                <button class="btn btn-danger btn-sm" name="postId" value="{{ post.id }}">삭제</button>
+            </form>
+        {% endif %}
+    </footer>
+{% endblock %}

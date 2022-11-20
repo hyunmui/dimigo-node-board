@@ -3,6 +3,7 @@
 {% block content %}
     <div class="login-area">
         <form method="post">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
             <div class="d-flex align-items-center mb-3">
                 <img class="logo" src="/images/dimigo-logo.png" alt="LOGO"/>
                 <h1 class="mb-0 ms-2">DIMIGO BOARD</h1>

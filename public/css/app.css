@@ -1,5 +1,19 @@
 #content {
+    padding-top: 30px;
+    padding-bottom: 30px;
     min-height: 100vh;
+}
+
+#content > header {
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+}
+
+#content > footer {
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid #ccc;
 }
 
 img.logo {
@@ -31,4 +45,26 @@ img.logo {
     margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+}
+
+#tableBoard {
+    table-layout: fixed;
+    min-width: 800px;
+}
+
+.board-column-1 {
+    width: 100px;
+}
+.board-column-2 {
+    width: auto;
+}
+.board-column-3 {
+    width: 240px;
+}
+.board-column-4 {
+    width: 100px;
+}
+
+.form .form-group {
+    margin-bottom: 1rem;
 }

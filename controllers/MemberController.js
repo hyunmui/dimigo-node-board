@@ -5,7 +5,7 @@ class MemberController {
         if (req.session.loginMember) {
             res.redirect('/');
         }
-        res.render('member/login.html.njk');
+        res.render('member/login.html.njk', { csrfToken: req.csrfToken() });
     }
     tryLogin(req, res) {
         const member = memberRepo.getMember(req.body.email);

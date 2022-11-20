@@ -1,4 +1,38 @@
 {% extends "../template.html.njk" %}
+
 {% block content %}
-    {{ user.name }}
+    <h1>게시판</h1>
+
+    <div class="mb-2">
+        <a href="/post/new" class="btn btn-primary">글쓰기</a>
+    </div>
+
+    <div class="table-responsive">
+        <table id="tableBoard" class="table">
+            <thead class="table-dark">
+                <tr>
+                    <th class="board-column-1" scope="col">#</th>
+                    <th class="board-column-2" scope="col">제목</th>
+                    <th class="board-column-3" scope="col">작성자</th>
+                    <th class="board-column-3" scope="col">등록일</th>
+                    <th class="board-column-4" scope="col">조회수</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posts %}
+                    <tr>
+                        <th scope="row">{{ post.id }}</th>
+                        <td>
+                            <a href="/post/{{ post.id }}">
+                                {{ post.title }}
+                            </a>
+                        </td>
+                        <td>{{ post.authorId }}</td>
+                        <td>{{ post.writeDate }}</td>
+                        <td>{{ post.viewCount }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

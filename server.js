@@ -7,17 +7,21 @@ var FileStore = require('session-file-store')(session);
 const nunjucks = require('nunjucks');
 const csurf = require('tiny-csrf');
 const cookieParser = require('cookie-parser');
+const dayjs = require('dayjs');
 const PORT = process.env.PORT || 8000;
 
 // app
 var app = express();
 
 // template engine configuration
-nunjucks.configure('views', {
+var env = nunjucks.configure('views', {
     autoescape: true,
     express: app,
     noCache: true,
 });
+
+env.addFilter('numeric', (value) => Number(value).toLocaleString('ko-KR'));
+env.addFilter('toDateFormat', (date, format) => dayjs(date).format(format ?? 'YYYY-MM-DD'));
 
 var fileStoreOptions = {};
 
@@ -58,6 +62,7 @@ app.use('*', (req, res, next) => {
 
 // 500 Internal Server Error
 app.use((err, req, res, next) => {
+    console.log(err);
     res.status(500).send(nunjucks.render('error/500.html.njk'));
 });
 

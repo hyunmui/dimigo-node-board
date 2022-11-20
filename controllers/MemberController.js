@@ -7,8 +7,8 @@ class MemberController {
         }
         res.render('member/login.html.njk', { csrfToken: req.csrfToken() });
     }
-    tryLogin(req, res) {
-        const member = memberRepo.getMember(req.body.email);
+    async tryLogin(req, res) {
+        const member = await memberRepo.getMember(req.body.email);
 
         if (member.password === req.body.password) {
             req.session.regenerate(() => {

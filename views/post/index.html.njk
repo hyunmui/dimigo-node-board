@@ -4,7 +4,9 @@
     <h1>게시판</h1>
 
     <div class="mb-2">
-        <a href="/post/new" class="btn btn-primary">글쓰기</a>
+        {% if loginMember %}
+            <a href="/post/new" class="btn btn-primary">글쓰기</a>
+        {% endif %}
     </div>
 
     <div class="table-responsive">
@@ -27,9 +29,9 @@
                                 {{ post.title }}
                             </a>
                         </td>
-                        <td>{{ post.authorId }}</td>
-                        <td>{{ post.writeDate }}</td>
-                        <td>{{ post.viewCount }}</td>
+                        <td>{{ post.author }}</td>
+                        <td>{{ post.writeDate | toDateFormat('YYYY-MM-DD HH:mm') }}</td>
+                        <td>{{ post.viewCount | numeric }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

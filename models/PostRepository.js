@@ -1,22 +1,41 @@
-let posts = require('./demo/posts.json');
-const _max = require('lodash/maxBy');
-const path = require('path');
-const fsPromises = require('fs').promises;
+const dbPromise = require('./DbConnection');
 
-module.exports = {
-    findPosts: () => posts,
-    getPost: (id) => posts.find((p) => p.id === parseInt(id)),
+const postRepository = {
+    findPosts: async () => {
+        const connection = await dbPromise;
+        let [rows] = await connection.query(
+            `select p.*, m.nickname as author
+            from posts p
+            join members m on p.authorId = m.memberId
+        `
+        );
+        return rows;
+    },
+    getPost: async (id) => {
+        const connection = await dbPromise;
+        let [rows] = await connection.query('select * from posts where id = ?', [id]);
+        return rows.length > 0 ? rows[0] : null;
+    },
     savePost: async (post) => {
-        posts = posts.filter((p) => p.id !== post.id);
-        posts.push(post);
-        await fsPromises.writeFile(path.join(__dirname, 'demo', 'posts.json'), JSON.stringify(posts));
-        return post;
+        const connection = await dbPromise;
+        let oldPost = post.id ? await postRepository.getPost(post.id) : null;
+        if (oldPost) {
+            await connection.query('update posts set title = ?, content = ? where id = ?', [
+                post.title,
+                post.content,
+                post.id,
+            ]);
+            return post.id;
+        } else {
+            delete post.id;
+            let [results] = await connection.query('insert into posts set ?', post);
+            return results.insertId;
+        }
     },
     deletePost: async (id) => {
-        posts = posts.filter((p) => p.id !== id);
-        await fsPromises.writeFile(path.join(__dirname, 'demo', 'posts.json'), JSON.stringify(posts));
-    },
-    newPostId: () => {
-        return _max(posts, (p) => p.id).id + 1;
+        const connection = await dbPromise;
+        await connection.query('delete from posts where id = ?', [id]);
     },
 };
+
+module.exports = postRepository;

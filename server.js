@@ -9,8 +9,10 @@ const csurf = require('tiny-csrf');
 const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 8000;
 
+// app
 var app = express();
 
+// template engine configuration
 nunjucks.configure('views', {
     autoescape: true,
     express: app,
@@ -19,8 +21,13 @@ nunjucks.configure('views', {
 
 var fileStoreOptions = {};
 
-app.use(logger);
+/** 1. internal middleware */
+app.use(express.urlencoded({ extended: false })); // url-encoding for unicode
+app.use(express.json());
+app.use('/', express.static(path.join(__dirname, 'public')));
 
+/** 2. external middleware by npm / yarnpkg */
+// 2-1. 세션 설정
 app.use(
     session({
         secret: 'this is my secret',
@@ -29,23 +36,30 @@ app.use(
         store: new FileStore(fileStoreOptions),
     })
 );
-app.use(express.urlencoded({ extended: false }));
 
+// tiny-csrf 사용하는데 필요
 app.use(cookieParser('cookie-parser-secret'));
+// 2-2. csrf tokenizer
 app.use(csurf('123456789iamasecret987654321look'));
 
+/** 3. custom middleware */
+app.use(logger);
 app.use(authManager);
 
-app.use(express.json());
-
-app.use('/', express.static(path.join(__dirname, 'public')));
-
+// add router WITH MVC
 app.use('/', require('./routes/root'));
-app.use('/member', require('./routes/member'));
 app.use('/', require('./routes/post'));
+app.use('/member', require('./routes/member'));
 
-app.use((req, res, next) => {
-    res.status(404).send(nunjucks.render('error.html.njk'));
+// 404 Page Not Found
+app.use('*', (req, res, next) => {
+    res.status(404).send(nunjucks.render('error/404.html.njk'));
 });
 
+// 500 Internal Server Error
+app.use((err, req, res, next) => {
+    res.status(500).send(nunjucks.render('error/500.html.njk'));
+});
+
+// app start
 app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));

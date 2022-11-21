@@ -7,7 +7,7 @@ const nunjucks = require('nunjucks');
 
 // 로그인 구현 관련
 const session = require('express-session');
-var FileStore = require('session-file-store')(session);
+// var FileStore = require('session-file-store')(session);
 
 // csrf protection
 const cookieParser = require('cookie-parser');
@@ -32,7 +32,7 @@ nunjucks.configure('views', {
 var fileStoreOptions = {};
 
 /** 1. internal middleware */
-app.use(express.urlencoded({ extended: false })); // url-encoding for unicode
+app.use(express.urlencoded({ extended: false })); // create body
 app.use(express.json());
 app.use('/', express.static(path.join(__dirname, 'public')));
 
@@ -43,7 +43,7 @@ app.use(
         secret: 'this is my secret',
         resave: false,
         saveUninitialized: false,
-        store: new FileStore(fileStoreOptions),
+        // store: new FileStore(fileStoreOptions),
     })
 );
 
@@ -51,6 +51,7 @@ app.use(
 app.use(cookieParser('cookie-parser-secret'));
 // 2-2. csrf tokenizer
 app.use(csurf('123456789iamasecret987654321look'));
+app.use(cors());
 
 /** 3. custom middleware */
 app.use(logger);
